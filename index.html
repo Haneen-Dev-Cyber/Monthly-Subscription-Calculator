@@ -1,397 +1,230 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حاسبة اشتراكات الاستوديو</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Tahoma, Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      padding: 20px;
-      background: #f7f5fb;
-      color: #302b3d;
-    }
-
-    .container {
-      max-width: 520px;
-      margin: 25px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 5px 25px rgba(50, 30, 70, 0.08);
-    }
-
-    h1 {
-      text-align: center;
-      color: #7653a6;
-      font-size: 23px;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 25px;
-    }
-
-    .today-box {
-      background: #f1ebf8;
-      padding: 14px;
-      border-radius: 12px;
-      text-align: center;
-      margin-bottom: 22px;
-      line-height: 1.8;
-    }
-
-    .today-box strong {
-      color: #7653a6;
-    }
-
-    label {
-      display: block;
-      margin: 16px 0 8px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ddd5e8;
-      border-radius: 10px;
-      font-size: 15px;
-      background: white;
-      color: #302b3d;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #8c6abb;
-    }
-
-    .result {
-      margin-top: 25px;
-      padding: 20px;
-      background: #f5f1fa;
-      border-radius: 15px;
-      display: none;
-    }
-
-    .result h2 {
-      text-align: center;
-      color: #7653a6;
-      font-size: 18px;
-      margin-top: 0;
-    }
-
-    .main-date {
-      background: #7653a6;
-      color: white;
-      padding: 17px;
-      border-radius: 12px;
-      text-align: center;
-      margin: 15px 0;
-    }
-
-    .main-date small {
-      display: block;
-      margin-bottom: 8px;
-      opacity: 0.9;
-    }
-
-    .main-date strong {
-      font-size: 23px;
-    }
-
-    .details {
-      background: white;
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 15px;
-    }
-
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-
-    .detail-row:last-child {
-      border-bottom: none;
-    }
-
-    .detail-row span:last-child {
-      font-weight: bold;
-      text-align: left;
-    }
-
-    .green {
-      color: #36845d;
-    }
-
-    .month-number {
-      text-align: center;
-      margin-top: 17px;
-      color: #7653a6;
-      font-weight: bold;
-      line-height: 1.8;
-    }
-
-    .copy-btn {
-      width: 100%;
-      margin-top: 18px;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #438d6a;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      background: #347653;
-    }
-
-    .note {
-      text-align: center;
-      color: #888;
-      font-size: 12px;
-      line-height: 1.8;
-      margin-top: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة اشتراكات الاستوديو</title>
+<style>
+*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
+body{margin:0;padding:20px;background:#f7f5fb;color:#302b3d}
+.container{max-width:520px;margin:25px auto;background:white;padding:25px;border-radius:20px;box-shadow:0 5px 25px rgba(50,30,70,.08)}
+h1{text-align:center;color:#7653a6;font-size:23px;margin-bottom:8px}
+.subtitle{text-align:center;color:#888;font-size:13px;margin-bottom:25px}
+.today-box{background:#f1ebf8;padding:14px;border-radius:12px;text-align:center;margin-bottom:22px;line-height:1.8}
+.today-box strong{color:#7653a6}
+label{display:block;margin:16px 0 8px;font-weight:bold;font-size:14px}
+input,select{width:100%;padding:13px;border:1px solid #ddd5e8;border-radius:10px;font-size:15px;background:white;color:#302b3d}
+input:focus,select:focus{outline:none;border-color:#8c6abb}
+.result{margin-top:25px;padding:20px;background:#f5f1fa;border-radius:15px;display:none}
+.result h2{text-align:center;color:#7653a6;font-size:18px;margin-top:0}
+.main-date{background:#7653a6;color:white;padding:17px;border-radius:12px;text-align:center;margin:15px 0}
+.main-date small{display:block;margin-bottom:8px;opacity:.9}
+.main-date strong{font-size:23px}
+.details{background:white;border-radius:12px;padding:14px;margin-top:15px}
+.detail-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #eee;font-size:14px}
+.detail-row:last-child{border-bottom:none}
+.detail-row span:last-child{font-weight:bold;text-align:left}
+.green{color:#36845d}
+.month-number{text-align:center;margin-top:17px;color:#7653a6;font-weight:bold;line-height:1.8}
+.copy-btn{width:100%;margin-top:18px;padding:14px;border:none;border-radius:10px;background:#438d6a;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+.copy-btn:hover{background:#347653}
+.note{text-align:center;color:#888;font-size:12px;line-height:1.8;margin-top:18px}
+</style>
 </head>
-
 <body>
 
-  <div class="container">
+<div class="container">
+<h1>حاسبة اشتراكات الاستوديو</h1>
+<p class="subtitle">احسبي مدة الاشتراك وتاريخ انتهائه بسهولة</p>
 
-    <h1>حاسبة اشتراكات الاستوديو</h1>
-    <p class="subtitle">احسبي مدة الاشتراك وتاريخ انتهائه بسهولة</p>
+<div class="today-box">
+<div>تاريخ اليوم</div>
+<strong id="todayGregorian"></strong>
+<div id="todayHijri"></div>
+</div>
 
-    <div class="today-box">
-      <div>تاريخ اليوم</div>
-      <strong id="todayGregorian"></strong>
-      <div id="todayHijri"></div>
-    </div>
+<label for="startDate">تاريخ بداية الاشتراك</label>
+<input type="date" id="startDate">
 
-    <label for="startDate">تاريخ بداية الاشتراك</label>
-    <input type="date" id="startDate">
+<label for="duration">مدة الاشتراك</label>
+<select id="duration">
+<option value="1">شهر واحد (30 يومًا)</option>
+<option value="2">شهرين (60 يومًا)</option>
+<option value="3">3 أشهر (90 يومًا)</option>
+<option value="4">4 أشهر (120 يومًا)</option>
+<option value="5">5 أشهر (150 يومًا)</option>
+<option value="6">6 أشهر (180 يومًا)</option>
+<option value="7">7 أشهر (210 أيام)</option>
+<option value="8">8 أشهر (240 يومًا)</option>
+<option value="9">9 أشهر (270 يومًا)</option>
+<option value="10">10 أشهر (300 يوم)</option>
+<option value="11">11 شهرًا (330 يومًا)</option>
+<option value="12">سنة كاملة (360 يومًا)</option>
+</select>
 
-    <label for="duration">مدة الاشتراك</label>
-    <select id="duration">
-      <option value="1">شهر واحد (30 يومًا)</option>
-      <option value="2">شهرين (60 يومًا)</option>
-      <option value="3">3 أشهر (90 يومًا)</option>
-      <option value="4">4 أشهر (120 يومًا)</option>
-      <option value="5">5 أشهر (150 يومًا)</option>
-      <option value="6">6 أشهر (180 يومًا)</option>
-      <option value="7">7 أشهر (210 أيام)</option>
-      <option value="8">8 أشهر (240 يومًا)</option>
-      <option value="9">9 أشهر (270 يومًا)</option>
-      <option value="10">10 أشهر (300 يوم)</option>
-      <option value="11">11 شهرًا (330 يومًا)</option>
-      <option value="12">سنة كاملة (360 يومًا)</option>
-    </select>
+<div class="result" id="result">
+<h2>تفاصيل الاشتراك</h2>
 
-    <div class="result" id="result">
+<div class="main-date">
+<small>آخر يوم للاستفادة من الاشتراك</small>
+<strong id="lastDay"></strong>
+</div>
 
-      <h2>تفاصيل الاشتراك</h2>
+<div class="details">
+<div class="detail-row">
+<span>مدة الاشتراك</span>
+<span id="durationText"></span>
+</div>
+<div class="detail-row">
+<span>بداية الاشتراك</span>
+<span id="startText"></span>
+</div>
+<div class="detail-row">
+<span>نهاية الاشتراك</span>
+<span id="endText" class="green"></span>
+</div>
+<div class="detail-row">
+<span>اليوم التالي لانتهاء الاشتراك</span>
+<span id="nextDayText"></span>
+</div>
+</div>
 
-      <div class="main-date">
-        <small>آخر يوم للاستفادة من الاشتراك</small>
-        <strong id="lastDay"></strong>
-      </div>
+<div class="month-number" id="monthNumber"></div>
 
-      <div class="details">
+<button class="copy-btn" onclick="copyDetails()">
+نسخ تفاصيل الاشتراك
+</button>
+</div>
 
-        <div class="detail-row">
-          <span>مدة الاشتراك</span>
-          <span id="durationText"></span>
-        </div>
+<p class="note">
+يُحسب يوم بداية الاشتراك على أنه اليوم الأول.
+كل شهر اشتراك يُحسب 30 يومًا.
+</p>
+</div>
 
-        <div class="detail-row">
-          <span>بداية الاشتراك</span>
-          <span id="startText"></span>
-        </div>
+<script>
+const startDateInput = document.getElementById("startDate");
+const durationInput = document.getElementById("duration");
+const resultBox = document.getElementById("result");
 
-        <div class="detail-row">
-          <span>نهاية الاشتراك</span>
-          <span id="endText" class="green"></span>
-        </div>
+let copiedText = "";
 
-        <div class="detail-row">
-          <span>اليوم التالي لانتهاء الاشتراك</span>
-          <span id="nextDayText"></span>
-        </div>
+function toInputDate(date) {
+const year = date.getFullYear();
+const month = String(date.getMonth()+1).padStart(2,"0");
+const day = String(date.getDate()).padStart(2,"0");
+return `${year}-${month}-${day}`;
+}
 
-      </div>
+function getLocalDate(value) {
+const [year,month,day] = value.split("-").map(Number);
+return new Date(year,month-1,day,12);
+}
 
-      <div class="month-number" id="monthNumber"></div>
+function addDays(date,days) {
+const newDate = new Date(date);
+newDate.setDate(newDate.getDate()+days);
+return newDate;
+}
 
-      <button class="copy-btn" onclick="copyDetails()">
-        نسخ تفاصيل الاشتراك
-      </button>
+function formatGregorian(date) {
+return new Intl.DateTimeFormat("ar-SA",{
+calendar:"gregory",
+year:"numeric",
+month:"long",
+day:"numeric"
+}).format(date);
+}
 
-    </div>
+function formatHijri(date) {
+try {
+return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura",{
+year:"numeric",
+month:"long",
+day:"numeric"
+}).format(date);
+} catch(error) {
+return "التاريخ الهجري غير متاح في هذا المتصفح";
+}
+}
 
-    <p class="note">
-      ملاحظة: يُحسب يوم بداية الاشتراك على أنه اليوم الأول.
-      كل شهر اشتراك يُحسب 30 يومًا.
-    </p>
+function showToday() {
+const today = new Date();
+document.getElementById("todayGregorian").textContent =
+formatGregorian(today);
+document.getElementById("todayHijri").textContent =
+formatHijri(today);
+}
 
-  </div>
+function calculate() {
+const startValue = startDateInput.value;
+const months = Number(durationInput.value);
 
-  <script>
-    const startDateInput = document.getElementById("startDate");
-    const durationInput = document.getElementById("duration");
-    const resultBox = document.getElementById("result");
+if(!startValue) {
+resultBox.style.display="none";
+return;
+}
 
-    let copiedText = "";
+const start = getLocalDate(startValue);
+const totalDays = months * 30;
 
-    // تحويل التاريخ إلى صيغة مناسبة لحقل التاريخ
-    function toInputDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
+const lastDate = addDays(start,totalDays-1);
+const nextDate = addDays(start,totalDays);
 
-      return `${year}-${month}-${day}`;
-    }
+document.getElementById("lastDay").textContent =
+formatGregorian(lastDate);
 
-    // قراءة التاريخ من الحقل كتاريخ محلي
-    function getLocalDate(value) {
-      const [year, month, day] = value.split("-").map(Number);
-      return new Date(year, month - 1, day, 12);
-    }
+document.getElementById("durationText").textContent =
+`${months} شهر — ${totalDays} يوم`;
 
-    // إضافة عدد من الأيام إلى التاريخ
-    function addDays(date, days) {
-      const newDate = new Date(date);
-      newDate.setDate(newDate.getDate() + days);
-      return newDate;
-    }
+document.getElementById("startText").textContent =
+formatGregorian(start);
 
-    // عرض التاريخ الميلادي بالعربية
-    function formatGregorian(date) {
-      return new Intl.DateTimeFormat("ar-SA", {
-        calendar: "gregory",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      }).format(date);
-    }
+document.getElementById("endText").textContent =
+formatGregorian(lastDate);
 
-    // عرض التاريخ الهجري بتقويم أم القرى
-    function formatHijri(date) {
-      try {
-        return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }).format(date);
-      } catch (error) {
-        return "التاريخ الهجري غير متاح في هذا المتصفح";
-      }
-    }
+document.getElementById("nextDayText").textContent =
+formatGregorian(nextDate);
 
-    // عرض تاريخ اليوم تلقائيًا
-    function showToday() {
-      const today = new Date();
+// رقم شهر الانتهاء واسمه والسنة
+const endingMonthNumber = lastDate.getMonth()+1;
 
-      document.getElementById("todayGregorian").textContent =
-        formatGregorian(today);
+const endingMonthName = new Intl.DateTimeFormat("ar-SA",{
+calendar:"gregory",
+month:"long",
+year:"numeric"
+}).format(lastDate);
 
-      document.getElementById("todayHijri").textContent =
-        formatHijri(today);
-    }
+document.getElementById("monthNumber").textContent =
+`رقم شهر الانتهاء: ${endingMonthNumber} — ${endingMonthName}`;
 
-    // حساب الاشتراك
-    function calculate() {
-      const startValue = startDateInput.value;
-      const months = Number(durationInput.value);
+copiedText =
+`تفاصيل الاشتراك\n`+
+`مدة الاشتراك: ${months} شهر (${totalDays} يوم)\n`+
+`بداية الاشتراك: ${formatGregorian(start)}\n`+
+`آخر يوم للاستفادة: ${formatGregorian(lastDate)}\n`+
+`اليوم التالي لانتهاء الاشتراك: ${formatGregorian(nextDate)}\n`+
+`رقم شهر الانتهاء: ${endingMonthNumber} — ${endingMonthName}`;
 
-      if (!startValue) {
-        resultBox.style.display = "none";
-        return;
-      }
+resultBox.style.display="block";
+}
 
-      const start = getLocalDate(startValue);
+async function copyDetails() {
+try {
+await navigator.clipboard.writeText(copiedText);
+alert("تم نسخ تفاصيل الاشتراك");
+} catch(error) {
+alert("تعذر النسخ. يمكنك نسخ التفاصيل يدويًا.");
+}
+}
 
-      // كل شهر = 30 يومًا
-      const totalDays = months * 30;
+showToday();
+startDateInput.value=toInputDate(new Date());
+calculate();
 
-      // يوم البداية محسوب، لذلك نضيف 29 يومًا للشهر الواحد
-      const lastDate = addDays(start, totalDays - 1);
-
-      // اليوم الذي يلي آخر يوم للاشتراك
-      const nextDate = addDays(start, totalDays);
-
-      document.getElementById("lastDay").textContent =
-        formatGregorian(lastDate);
-
-      document.getElementById("durationText").textContent =
-        `${months} ${months === 1 ? "شهر" : "أشهر"} (${totalDays} يومًا)`;
-
-      document.getElementById("startText").textContent =
-        formatGregorian(start);
-
-      document.getElementById("endText").textContent =
-        formatGregorian(lastDate);
-
-      document.getElementById("nextDayText").textContent =
-        formatGregorian(nextDate);
-
-      const endingMonth = new Intl.DateTimeFormat("ar-SA", {
-        calendar: "gregory",
-        month: "long",
-        year: "numeric"
-      }).format(lastDate);
-
-      document.getElementById("monthNumber").textContent =
-        `شهر انتهاء الاشتراك: ${endingMonth}`;
-
-      copiedText =
-        `تفاصيل الاشتراك\n` +
-        `مدة الاشتراك: ${months} شهر / ${totalDays} يوم\n` +
-        `بداية الاشتراك: ${formatGregorian(start)}\n` +
-        `آخر يوم للاستفادة: ${formatGregorian(lastDate)}\n` +
-        `اليوم التالي لانتهاء الاشتراك: ${formatGregorian(nextDate)}\n` +
-        `شهر انتهاء الاشتراك: ${endingMonth}`;
-
-      resultBox.style.display = "block";
-    }
-
-    // نسخ تفاصيل الاشتراك
-    async function copyDetails() {
-      try {
-        await navigator.clipboard.writeText(copiedText);
-        alert("تم نسخ تفاصيل الاشتراك");
-      } catch (error) {
-        alert("تعذر النسخ. يمكنك تحديد التفاصيل ونسخها يدويًا.");
-      }
-    }
-
-    // تاريخ اليوم الافتراضي عند فتح الصفحة
-    showToday();
-    startDateInput.value = toInputDate(new Date());
-    calculate();
-
-    // إعادة الحساب عند تغيير البداية أو المدة
-    startDateInput.addEventListener("change", calculate);
-    durationInput.addEventListener("change", calculate);
-  </script>
+startDateInput.addEventListener("change",calculate);
+durationInput.addEventListener("change",calculate);
+</script>
 
 </body>
 </html>
