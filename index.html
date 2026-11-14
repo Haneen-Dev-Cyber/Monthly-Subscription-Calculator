@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة اشتراكات الاستوديو</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, Tahoma, sans-serif;
+  background: #f7f4f7;
+  color: #352d37;
+}
+
+.container {
+  max-width: 550px;
+  margin: 25px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 25px #00000010;
+}
+
+h1 {
+  text-align: center;
+  color: #705477;
+  font-size: 23px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.today {
+  background: #f1eaf2;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.today strong {
+  color: #705477;
+}
+
+label {
+  display: block;
+  margin: 15px 0 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.buttons button {
+  flex: 1;
+  background: #eee8ef;
+  color: #705477;
+}
+
+.buttons button.active {
+  background: #705477;
+  color: white;
+}
+
+.result {
+  margin-top: 25px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #edf4ee;
+  text-align: center;
+}
+
+.result p {
+  color: #66776a;
+  font-size: 13px;
+}
+
+.result h2 {
+  color: #52775b;
+  font-size: 22px;
+  line-height: 1.7;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+.detail span {
+  color: #777;
+}
+
+.detail strong {
+  text-align: left;
+}
+
+.copy {
+  width: 100%;
+  margin-top: 20px;
+  background: #72917a;
+  color: white;
+  font-weight: bold;
+}
+
+.note {
+  color: #888;
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Studio Subscription Calculator</h1>
+
+  <p class="subtitle">
+    حاسبة اشتراكات الاستوديو الرياضي
+  </p>
+
+  <div class="today">
+    <p>تاريخ اليوم:</p>
+    <strong id="today"></strong>
+    <p id="todayHijri"></p>
+  </div>
+
+  <label for="startDate">
+    تاريخ بداية الاشتراك
+  </label>
+
+  <input type="date" id="startDate">
+
+  <div class="buttons">
+    <button id="gregorianBtn" class="active">
+      ميلادي
+    </button>
+
+    <button id="hijriBtn">
+      هجري
+    </button>
+  </div>
+
+  <div class="result">
+
+    <p>آخر يوم للاستفادة من الاشتراك</p>
+
+    <h2 id="lastDay">—</h2>
+
+    <p id="alternateDate"></p>
+
+  </div>
+
+  <div class="details">
+
+    <div class="detail">
+      <span>بداية الاشتراك</span>
+      <strong id="startResult">—</strong>
+    </div>
+
+    <div class="detail">
+      <span>تاريخ إكمال 30 يومًا</span>
+      <strong id="nextDay">—</strong>
+    </div>
+
+    <div class="detail">
+      <span>رقم شهر الانتهاء</span>
+      <strong id="monthNumber">—</strong>
+    </div>
+
+    <div class="detail">
+      <span>عدد أيام شهر البداية</span>
+      <strong id="monthDays">—</strong>
+    </div>
+
+    <div class="detail">
+      <span>مدة الاشتراك</span>
+      <strong>30 يومًا</strong>
+    </div>
+
+  </div>
+
+  <button class="copy" id="copyButton">
+    نسخ تفاصيل الاشتراك
+  </button>
+
+  <p class="note">
+    طريقة الحساب: يوم البداية هو اليوم الأول،
+    وتضاف 29 يومًا لتحديد اليوم الثلاثين.
+    الحساب الميلادي هو الأساس، والهجري للعرض الاحتياطي.
+  </p>
+
+</div>
+
+<script>
+
+// 1. إعداد التقويمات
+
+const gregorian = new Intl.DateTimeFormat(
+  "ar-SA-u-ca-gregory",
+  {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  }
+);
+
+const hijri = new Intl.DateTimeFormat(
+  "ar-SA-u-ca-islamic-umalqura",
+  {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  }
+);
+
+let calendar = "gregorian";
+
+
+// 2. تحويل التاريخ إلى صيغة محلية
+
+function toISO(date) {
+
+  const year = date.getFullYear();
+
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+
+  const day = String(
+    date.getDate()
+  ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+// 3. قراءة التاريخ المختار
+
+function getDate(value) {
+
+  const [year, month, day] =
+    value.split("-").map(Number);
+
+  return new Date(
+    year,
+    month - 1,
+    day,
+    12
+  );
+
+}
+
+
+// 4. إضافة عدد محدد من الأيام
+
+function addDays(date, days) {
+
+  const result = new Date(date);
+
+  result.setDate(
+    result.getDate() + days
+  );
+
+  return result;
+
+}
+
+
+// 5. اختيار طريقة عرض التاريخ
+
+function formatDate(date) {
+
+  if (calendar === "hijri") {
+    return hijri.format(date);
+  }
+
+  return gregorian.format(date);
+
+}
+
+
+// 6. حساب الاشتراك
+
+function calculate() {
+
+  const today = new Date();
+
+  document.getElementById("today").textContent =
+    gregorian.format(today);
+
+  document.getElementById("todayHijri").textContent =
+    "هجريًا: " + hijri.format(today);
+
+
+  const value =
+    document.getElementById("startDate").value;
+
+  if (!value) return;
+
+
+  const start = getDate(value);
+
+  // اليوم الأول محسوب ضمن الاشتراك
+
+  const lastDay = addDays(start, 29);
+
+  // اليوم التالي بعد اكتمال الثلاثين
+
+  const nextDay = addDays(start, 30);
+
+
+  // عدد أيام شهر البداية
+
+  const daysInMonth = new Date(
+    start.getFullYear(),
+    start.getMonth() + 1,
+    0
+  ).getDate();
+
+
+  // عرض النتائج
+
+  document.getElementById("startResult").textContent =
+    formatDate(start);
+
+  document.getElementById("lastDay").textContent =
+    formatDate(lastDay);
+
+  document.getElementById("nextDay").textContent =
+    formatDate(nextDay);
+
+  document.getElementById("monthNumber").textContent =
+    String(lastDay.getMonth() + 1).padStart(2, "0");
+
+  document.getElementById("monthDays").textContent =
+    daysInMonth + " يومًا";
+
+
+  // عرض التقويم الآخر للمقارنة
+
+  document.getElementById("alternateDate").textContent =
+    calendar === "gregorian"
+      ? "هجريًا: " + hijri.format(lastDay)
+      : "ميلاديًا: " + gregorian.format(lastDay);
+
+}
+
+
+// 7. التبديل بين الميلادي والهجري
+
+document.getElementById("gregorianBtn")
+.addEventListener("click", function() {
+
+  calendar = "gregorian";
+
+  this.classList.add("active");
+
+  document.getElementById("hijriBtn")
+    .classList.remove("active");
+
+  calculate();
+
+});
+
+
+document.getElementById("hijriBtn")
+.addEventListener("click", function() {
+
+  calendar = "hijri";
+
+  this.classList.add("active");
+
+  document.getElementById("gregorianBtn")
+    .classList.remove("active");
+
+  calculate();
+
+});
+
+
+// 8. عند تغيير تاريخ البداية
+
+document.getElementById("startDate")
+.addEventListener("change", calculate);
+
+
+// 9. نسخ تفاصيل الاشتراك
+
+document.getElementById("copyButton")
+.addEventListener("click", async function() {
+
+  const start = getDate(
+    document.getElementById("startDate").value
+  );
+
+  const lastDay = addDays(start, 29);
+
+  const nextDay = addDays(start, 30);
+
+  const text =
+    "بداية الاشتراك: " + gregorian.format(start) +
+    "\nآخر يوم للاستفادة: " + gregorian.format(lastDay) +
+    "\nإكمال 30 يومًا: " + gregorian.format(nextDay) +
+    "\nهجريًا: " + hijri.format(lastDay) +
+    "\nالمدة: 30 يومًا";
+
+  try {
+
+    await navigator.clipboard.writeText(text);
+
+    this.textContent = "تم النسخ بنجاح ✓";
+
+  } catch (error) {
+
+    this.textContent = "تعذر النسخ";
+
+  }
+
+});
+
+
+// 10. تحديد تاريخ اليوم تلقائيًا
+
+document.getElementById("startDate").value =
+  toISO(new Date());
+
+calculate();
+
+</script>
+
+</body>
+</html>
